@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Lora', 'Georgia', serif;
+  background-color: #faf6ee;
+  color: #2c1810;
+  line-height: 1.8;
+  margin: 0;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+::selection {
+  background-color: rgba(116, 84, 9, 0.2);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #f0e8d5;
+}
+::-webkit-scrollbar-thumb {
+  background: #a67c1a;
+  border-radius: 4px;
+}
