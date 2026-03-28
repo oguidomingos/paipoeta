@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
 body {
-  font-family: 'Lora', 'Georgia', serif;
-  background-color: #faf6ee;
+  font-family: 'Caveat', 'Lora', 'Georgia', serif;
+  background-color: #2a1a0e;
   color: #2c1810;
-  line-height: 1.8;
+  line-height: 1.9;
   margin: 0;
+  font-size: 1.15rem;
 }
 
 h1, h2, h3, h4 {
@@ -17,16 +18,59 @@ html {
 }
 
 ::selection {
-  background-color: rgba(116, 84, 9, 0.2);
+  background-color: rgba(116, 84, 9, 0.3);
 }
 
 ::-webkit-scrollbar {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #f0e8d5;
+  background: #3a2a1a;
 }
 ::-webkit-scrollbar-thumb {
-  background: #a67c1a;
+  background: #8b6914;
   border-radius: 4px;
+}
+
+/* Paper content area */
+.paper-bg {
+  background-image: url('/paipoeta/paper-texture.jpg');
+  background-size: cover;
+  background-repeat: repeat;
+  position: relative;
+}
+
+.paper-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(245, 237, 214, 0.4);
+  pointer-events: none;
+}
+
+/* Cracked earth background */
+.earth-bg {
+  background-image: url('/paipoeta/cracked-earth.jpg');
+  background-size: cover;
+  background-repeat: repeat;
+}
+
+/* Earth border strips */
+.earth-border-left {
+  background-image: url('/paipoeta/earth-border.jpg');
+  background-size: cover;
+  background-repeat: repeat-y;
+}
+
+.earth-border-right {
+  background-image: url('/paipoeta/earth-border.jpg');
+  background-size: cover;
+  background-repeat: repeat-y;
+  transform: scaleX(-1);
+}
+
+/* Ink writing effect */
+.ink-text {
+  color: #1a0e05;
+  text-shadow: 0 0 1px rgba(26, 14, 5, 0.3);
 }
