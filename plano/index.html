@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plano de Implementação — Pai Poeta SEO + SSL</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=IM+Fell+English:ital@0;1&family=Inter:wght@400;500;600;700&display=swap');
+
+        :root {
+            --parchment: #f5f0e8;
+            --ink: #2b1810;
+            --gold: #d4af37;
+            --lapis: #2e5090;
+            --vermilion: #c0392b;
+            --sage: #4a6741;
+            --border: #d4c5a9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--parchment);
+            color: var(--ink);
+            line-height: 1.7;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--ink) 0%, #3d2b1f 100%);
+            color: var(--parchment);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-bottom: 4px solid var(--gold);
+        }
+
+        .header h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            color: var(--gold);
+        }
+
+        .header p {
+            font-family: 'IM Fell English', serif;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .header .ticket {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.3rem 1rem;
+            background: rgba(212,175,55,0.2);
+            border: 1px solid var(--gold);
+            border-radius: 4px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+
+        @media (max-width: 600px) {
+            .info-grid { grid-template-columns: 1fr; }
+            .header h1 { font-size: 1.5rem; }
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 1.2rem;
+        }
+
+        .info-card .label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888;
+            margin-bottom: 0.3rem;
+        }
+
+        .info-card .value {
+            font-size: 0.95rem;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .info-card .value code {
+            background: #f0ebe3;
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+        }
+
+        .task {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .task::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+        }
+
+        .task.dns::before { background: var(--vermilion); }
+        .task.nginx::before { background: var(--lapis); }
+        .task.ssl::before { background: var(--sage); }
+        .task.security::before { background: #e67e22; }
+        .task.seo::before { background: var(--gold); }
+        .task.verify::before { background: #8e44ad; }
+
+        .task-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: white;
+            margin-bottom: 0.8rem;
+        }
+
+        .dns .task-number { background: var(--vermilion); }
+        .nginx .task-number { background: var(--lapis); }
+        .ssl .task-number { background: var(--sage); }
+        .security .task-number { background: #e67e22; }
+        .seo .task-number { background: var(--gold); color: var(--ink); }
+        .verify .task-number { background: #8e44ad; }
+
+        .task h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.3rem;
+            color: var(--ink);
+        }
+
+        .task .subtitle {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 1rem;
+        }
+
+        .task h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin: 1.2rem 0 0.5rem 0;
+            color: var(--ink);
+        }
+
+        .task p, .task li {
+            font-size: 0.95rem;
+            color: #444;
+        }
+
+        .task ul, .task ol {
+            padding-left: 1.5rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .task li {
+            margin-bottom: 0.3rem;
+        }
+
+        .code-block {
+            background: #1e1e2e;
+            color: #cdd6f4;
+            border-radius: 8px;
+            padding: 1rem 1.2rem;
+            font-family: 'Fira Code', 'Consolas', monospace;
+            font-size: 0.82rem;
+            overflow-x: auto;
+            margin: 0.8rem 0;
+            line-height: 1.6;
+            white-space: pre;
+        }
+
+        .code-block .comment { color: #6c7086; }
+        .code-block .cmd { color: #89b4fa; }
+        .code-block .str { color: #a6e3a1; }
+
+        .warning {
+            background: #fff8e1;
+            border-left: 4px solid #f9a825;
+            padding: 0.8rem 1rem;
+            border-radius: 0 6px 6px 0;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+
+        .success {
+            background: #e8f5e9;
+            border-left: 4px solid var(--sage);
+            padding: 0.8rem 1rem;
+            border-radius: 0 6px 6px 0;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+
+        .checklist {
+            background: white;
+            border: 2px solid var(--gold);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .checklist h2 {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: var(--gold);
+            margin-bottom: 1rem;
+        }
+
+        .check-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f0ebe3;
+            font-size: 0.95rem;
+        }
+
+        .check-item:last-child { border-bottom: none; }
+
+        .check-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .timeline {
+            display: flex;
+            justify-content: space-between;
+            gap: 0.5rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .timeline-item {
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+            padding: 1rem 0.5rem;
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            position: relative;
+        }
+
+        .timeline-item .step {
+            font-weight: 700;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #888;
+        }
+
+        .timeline-item .name {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        .timeline-item .time {
+            font-size: 0.8rem;
+            color: #888;
+            margin-top: 0.2rem;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.85rem;
+            color: #888;
+            border-top: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .footer .signature {
+            font-family: 'IM Fell English', serif;
+            font-size: 1.1rem;
+            color: var(--ink);
+            margin-top: 0.5rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0.8rem 0;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            text-align: left;
+            padding: 0.5rem 0.8rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        th {
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: #888;
+        }
+
+        td code {
+            background: #f0ebe3;
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-size: 0.82rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Plano de Implementacao Tecnica</h1>
+        <p>Pai Poeta &mdash; SEO + SSL na VPS</p>
+        <div class="ticket">DES-167 &bull; paipoeta.com.br</div>
+    </div>
+
+    <div class="container">
+        <!-- Estado Atual -->
+        <div class="info-grid">
+            <div class="info-card">
+                <div class="label">Dominio</div>
+                <div class="value">paipoeta.com.br / www.paipoeta.com.br</div>
+            </div>
+            <div class="info-card">
+                <div class="label">VPS</div>
+                <div class="value"><code>72.61.129.237</code> (Ubuntu 22.04)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Stack</div>
+                <div class="value">Plone 4.3 (Python 2.7) em Docker</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Container</div>
+                <div class="value"><code>plone-paipoeta</code> (porta 8085 &rarr; 8080)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Nginx</div>
+                <div class="value">v1.18.0 (ativo no host)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Certbot</div>
+                <div class="value">v5.4.0 (ativo no host)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">DNS Atual</div>
+                <div class="value">paipoeta.com.br &rarr; <code>96.126.125.239</code> (IP antigo)</div>
+            </div>
+            <div class="info-card">
+                <div class="label">Admin Plone</div>
+                <div class="value">user <code>admin</code> / senha <code>admin</code></div>
+            </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="timeline">
+            <div class="timeline-item">
+                <div class="step">Passo 1</div>
+                <div class="name">DNS</div>
+                <div class="time">~30 min + propagacao</div>
+            </div>
+            <div class="timeline-item">
+                <div class="step">Passo 2</div>
+                <div class="name">Nginx</div>
+                <div class="time">~15 min</div>
+            </div>
+            <div class="timeline-item">
+                <div class="step">Passo 3</div>
+                <div class="name">SSL</div>
+                <div class="time">~10 min</div>
+            </div>
+            <div class="timeline-item">
+                <div class="step">Passo 4</div>
+                <div class="name">Seguranca</div>
+                <div class="time">~10 min</div>
+            </div>
+            <div class="timeline-item">
+                <div class="step">Passo 5</div>
+                <div class="name">SEO</div>
+                <div class="time">~30 min</div>
+            </div>
+            <div class="timeline-item">
+                <div class="step">Passo 6</div>
+                <div class="name">Verificacao</div>
+                <div class="time">~15 min</div>
+            </div>
+        </div>
+
+        <!-- TASK 1: DNS -->
+        <div class="task dns">
+            <div class="task-number">1</div>
+            <h2>Configuracao de DNS</h2>
+            <div class="subtitle">Apontar dominio para a VPS &bull; Pre-requisito para tudo</div>
+
+            <p>No painel do registrador (Registro.br ou similar), criar/atualizar os registros A:</p>
+
+            <table>
+                <tr><th>Registro</th><th>Tipo</th><th>Valor</th></tr>
+                <tr><td><code>paipoeta.com.br</code></td><td>A</td><td><code>72.61.129.237</code></td></tr>
+                <tr><td><code>www.paipoeta.com.br</code></td><td>A</td><td><code>72.61.129.237</code></td></tr>
+            </table>
+
+            <h3>Verificacao</h3>
+            <div class="code-block"><span class="cmd">dig</span> +short paipoeta.com.br A
+<span class="comment"># Deve retornar: 72.61.129.237</span></div>
+
+            <div class="warning">
+                <strong>Atencao:</strong> A propagacao DNS pode levar de 15 minutos a 48 horas. So prossiga para os proximos passos quando o dig retornar o IP correto.
+            </div>
+        </div>
+
+        <!-- TASK 2: Nginx -->
+        <div class="task nginx">
+            <div class="task-number">2</div>
+            <h2>Nginx Reverse Proxy</h2>
+            <div class="subtitle">Proxy reverso para o Plone via dominio</div>
+
+            <p>Conectar na VPS e criar a configuracao do Nginx:</p>
+
+            <div class="code-block"><span class="cmd">ssh</span> -i ~/.ssh/id_ed25519_icevps root@72.61.129.237</div>
+
+            <p>Criar o arquivo de configuracao:</p>
+
+            <div class="code-block"><span class="cmd">cat</span> > /etc/nginx/sites-available/paipoeta.com.br << <span class="str">'EOF'</span>
+server {
+    listen 80;
+    server_name paipoeta.com.br www.paipoeta.com.br;
+    client_max_body_size 20M;
+
+    <span class="comment"># Certbot challenge</span>
+    location /.well-known/acme-challenge/ {
+        root /var/www/html;
+    }
+
+    <span class="comment"># Redirecionar raiz para /portal/</span>
+    location = / {
+        return 301 /portal/;
+    }
+
+    <span class="comment"># Proxy para Plone (VirtualHostBase rewriting)</span>
+    location / {
+        proxy_pass http://127.0.0.1:8085/VirtualHostBase/http/paipoeta.com.br:80/portal/VirtualHostRoot/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_read_timeout 120s;
+        proxy_buffering on;
+        proxy_cache_valid 200 10m;
+    }
+}
+<span class="str">EOF</span></div>
+
+            <p>Ativar e testar:</p>
+            <div class="code-block"><span class="cmd">ln</span> -sf /etc/nginx/sites-available/paipoeta.com.br /etc/nginx/sites-enabled/
+<span class="cmd">nginx</span> -t && systemctl reload nginx</div>
+
+            <h3>Verificacao (antes do DNS propagar)</h3>
+            <div class="code-block"><span class="cmd">curl</span> -H "Host: paipoeta.com.br" http://127.0.0.1/ -s -o /dev/null -w '%{http_code}'
+<span class="comment"># Deve retornar: 301 (redirect para /portal/)</span>
+
+<span class="cmd">curl</span> -H "Host: paipoeta.com.br" http://127.0.0.1/front-page -s -o /dev/null -w '%{http_code}'
+<span class="comment"># Deve retornar: 200</span></div>
+
+            <div class="success">
+                <strong>Nota sobre VirtualHostBase:</strong> O Plone usa uma URL especial para rewriting interno. Isso faz com que o Plone gere URLs absolutas com o dominio correto (em vez de localhost:8085/portal/...).
+            </div>
+        </div>
+
+        <!-- TASK 3: SSL -->
+        <div class="task ssl">
+            <div class="task-number">3</div>
+            <h2>SSL com Let's Encrypt</h2>
+            <div class="subtitle">Certificado HTTPS gratuito e automatico</div>
+
+            <div class="warning">
+                <strong>Pre-requisito:</strong> O DNS ja deve estar propagado antes de executar este passo.
+            </div>
+
+            <div class="code-block"><span class="cmd">certbot</span> --nginx \
+  -d paipoeta.com.br \
+  -d www.paipoeta.com.br \
+  --non-interactive \
+  --agree-tos \
+  -m oguigodomingos@gmail.com</div>
+
+            <p>O Certbot vai automaticamente:</p>
+            <ol>
+                <li>Gerar o certificado SSL</li>
+                <li>Modificar o config do Nginx para HTTPS</li>
+                <li>Adicionar redirect HTTP &rarr; HTTPS</li>
+            </ol>
+
+            <h3>Apos SSL: Atualizar VirtualHostBase</h3>
+            <p>No bloco <code>server</code> que o Certbot criou (porta 443), trocar o <code>proxy_pass</code>:</p>
+
+            <div class="code-block"><span class="comment"># Bloco 443 (criado pelo certbot) — atualizar proxy_pass:</span>
+location / {
+    proxy_pass http://127.0.0.1:8085/VirtualHostBase/<span class="str">https</span>/paipoeta.com.br:<span class="str">443</span>/portal/VirtualHostRoot/;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto <span class="str">https</span>;
+    proxy_read_timeout 120s;
+}</div>
+
+            <div class="code-block"><span class="cmd">nginx</span> -t && systemctl reload nginx</div>
+
+            <h3>Verificacao</h3>
+            <div class="code-block"><span class="cmd">curl</span> -s -o /dev/null -w '%{http_code}' https://paipoeta.com.br/
+<span class="comment"># Deve retornar: 200</span>
+
+<span class="comment"># Verificar certificado</span>
+<span class="cmd">echo</span> | openssl s_client -servername paipoeta.com.br -connect paipoeta.com.br:443 2>/dev/null | openssl x509 -noout -dates</div>
+        </div>
+
+        <!-- TASK 4: Security -->
+        <div class="task security">
+            <div class="task-number">4</div>
+            <h2>Seguranca — Fechar Porta 8085</h2>
+            <div class="subtitle">Opcional mas recomendado &bull; Apos confirmar que SSL funciona</div>
+
+            <p>Recriar o container para que a porta 8085 so aceite conexoes locais (loopback):</p>
+
+            <div class="code-block"><span class="cmd">docker</span> stop plone-paipoeta && docker rm plone-paipoeta
+
+<span class="cmd">docker</span> run -d --name plone-paipoeta \
+  -p <span class="str">127.0.0.1</span>:8085:8080 \
+  -u root \
+  -v /opt/plone-paipoeta/data:/data \
+  plone-paipoeta:v4</div>
+
+            <div class="success">
+                <strong>Diferenca:</strong> <code>127.0.0.1:8085:8080</code> (so loopback) vs <code>0.0.0.0:8085:8080</code> (publico). Com loopback, so o Nginx local consegue acessar o Plone.
+            </div>
+        </div>
+
+        <!-- TASK 5: SEO -->
+        <div class="task seo">
+            <div class="task-number">5</div>
+            <h2>Configuracoes de SEO no Plone</h2>
+            <div class="subtitle">Otimizacoes no painel admin do CMS</div>
+
+            <h3>5.1 — Titulo e Descricao do Site</h3>
+            <p>Acessar <code>https://paipoeta.com.br/@@site-controlpanel</code>:</p>
+            <table>
+                <tr><th>Campo</th><th>Valor</th></tr>
+                <tr><td>Titulo do site</td><td><strong>Pai Poeta</strong></td></tr>
+                <tr><td>Descricao</td><td>Portal do Pai Poeta &mdash; literatura, poesia, cultura e educacao para pais e filhos</td></tr>
+            </table>
+
+            <h3>5.2 — URL Base</h3>
+            <p>Verificar em <code>@@mail-controlpanel</code> ou ZMI (<code>/portal/manage_propertiesForm</code>) que nao ha referencias a <code>localhost:8085</code>.</p>
+
+            <h3>5.3 — Sitemap XML</h3>
+            <p>Plone 4.3 gera sitemap automaticamente. Verificar:</p>
+            <div class="code-block"><span class="cmd">curl</span> https://paipoeta.com.br/sitemap.xml.gz -s -o /dev/null -w '%{http_code}'
+<span class="comment"># Se 404: ativar em @@search-controlpanel → "Enable sitemap.xml.gz"</span></div>
+
+            <h3>5.4 — robots.txt</h3>
+            <p>Verificar que contem a referencia ao sitemap:</p>
+            <div class="code-block"><span class="cmd">curl</span> https://paipoeta.com.br/robots.txt
+<span class="comment"># Deve conter: Sitemap: https://paipoeta.com.br/sitemap.xml.gz</span></div>
+            <p>Se nao tiver, adicionar no Nginx:</p>
+            <div class="code-block">location = /robots.txt {
+    return 200 "User-agent: *\nAllow: /\nSitemap: https://paipoeta.com.br/sitemap.xml.gz\n";
+}</div>
+
+            <h3>5.5 — Google Search Console</h3>
+            <p>O site ja tem a tag de verificacao Google. Apos DNS + SSL:</p>
+            <ol>
+                <li>Acessar <a href="https://search.google.com/search-console/" target="_blank">Google Search Console</a></li>
+                <li>Adicionar propriedade <code>https://paipoeta.com.br</code></li>
+                <li>Submeter o sitemap: <code>https://paipoeta.com.br/sitemap.xml.gz</code></li>
+            </ol>
+
+            <h3>5.6 — Redirect www &rarr; sem-www</h3>
+            <p>Definir URL canonica (recomendado: sem www). No Nginx, bloco 443:</p>
+            <div class="code-block">server {
+    listen 443 ssl;
+    server_name www.paipoeta.com.br;
+    <span class="comment"># ... certificados SSL ...</span>
+    return 301 https://paipoeta.com.br$request_uri;
+}</div>
+        </div>
+
+        <!-- TASK 6: Verification -->
+        <div class="task verify">
+            <div class="task-number">6</div>
+            <h2>Arquivos Relevantes na VPS</h2>
+            <div class="subtitle">Referencia rapida</div>
+
+            <table>
+                <tr><th>Caminho</th><th>Descricao</th></tr>
+                <tr><td><code>/opt/plone-paipoeta/Dockerfile</code></td><td>Dockerfile v12 (multi-stage, funcional)</td></tr>
+                <tr><td><code>/opt/plone-paipoeta/data/</code></td><td>Volume ZODB (filestorage + blobstorage)</td></tr>
+                <tr><td><code>/opt/plone-paipoeta/sdists/</code></td><td>Pacotes Python pre-baixados</td></tr>
+                <tr><td><code>/etc/nginx/sites-available/paipoeta.com.br</code></td><td>Config Nginx</td></tr>
+                <tr><td><code>/etc/nginx/sites-enabled/paipoeta.com.br</code></td><td>Symlink ativo</td></tr>
+            </table>
+
+            <h3>Comandos Uteis</h3>
+            <div class="code-block"><span class="comment"># SSH</span>
+<span class="cmd">ssh</span> -i ~/.ssh/id_ed25519_icevps root@72.61.129.237
+
+<span class="comment"># Logs do container</span>
+<span class="cmd">docker</span> logs -f plone-paipoeta
+
+<span class="comment"># Restart</span>
+<span class="cmd">docker</span> restart plone-paipoeta
+
+<span class="comment"># Rebuild da imagem</span>
+<span class="cmd">cd</span> /opt/plone-paipoeta && docker build -t plone-paipoeta:v4 .
+
+<span class="comment"># Testar nginx</span>
+<span class="cmd">nginx</span> -t && systemctl reload nginx
+
+<span class="comment"># Renovar SSL (teste)</span>
+<span class="cmd">certbot</span> renew --dry-run</div>
+        </div>
+
+        <!-- Checklist -->
+        <div class="checklist">
+            <h2>Checklist de Verificacao Final</h2>
+            <div class="check-item"><div class="check-box"></div> DNS <code>paipoeta.com.br</code> &rarr; 72.61.129.237</div>
+            <div class="check-item"><div class="check-box"></div> DNS <code>www.paipoeta.com.br</code> &rarr; 72.61.129.237</div>
+            <div class="check-item"><div class="check-box"></div> Nginx proxy reverso configurado</div>
+            <div class="check-item"><div class="check-box"></div> SSL ativo (Let's Encrypt)</div>
+            <div class="check-item"><div class="check-box"></div> HTTP &rarr; HTTPS redirect funcionando</div>
+            <div class="check-item"><div class="check-box"></div> www &rarr; sem-www redirect funcionando</div>
+            <div class="check-item"><div class="check-box"></div> <code>https://paipoeta.com.br/</code> retorna 200</div>
+            <div class="check-item"><div class="check-box"></div> Navegacao lateral com subpaginas visivel</div>
+            <div class="check-item"><div class="check-box"></div> URLs geradas pelo Plone usam <code>https://paipoeta.com.br/...</code></div>
+            <div class="check-item"><div class="check-box"></div> <code>robots.txt</code> acessivel</div>
+            <div class="check-item"><div class="check-box"></div> <code>sitemap.xml.gz</code> acessivel</div>
+            <div class="check-item"><div class="check-box"></div> Google Search Console configurado</div>
+            <div class="check-item"><div class="check-box"></div> Porta 8085 fechada externamente</div>
+        </div>
+
+        <div class="footer">
+            <p>Plano tecnico preparado para aprovacao &bull; DES-167</p>
+            <div class="signature">Um abraco do Domi</div>
+        </div>
+    </div>
+</body>
+</html>
